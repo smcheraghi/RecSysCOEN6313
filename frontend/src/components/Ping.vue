@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <p>Ping page</p>
     <p>{{ msg }}</p>
   </div>
 </template>
