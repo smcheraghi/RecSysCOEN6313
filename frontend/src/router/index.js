@@ -2,9 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const routerOptions = [
-  { path: '/', component: 'HelloWorld' },
+  { path: '/', component: 'Home' },
   { path: '/ping', component: 'Ping' },
-  { path: '*', component: 'NotFound' }
+  { path: '/about', component: 'About' },
+  { path: '*', component: '404' }
 ]
 
 const routes = routerOptions.map(route => {

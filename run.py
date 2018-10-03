@@ -8,7 +8,7 @@ app = Flask(__name__,
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
+# API routes
 @app.route('/api/random', methods=['GET'])
 def random_number():
     response = {
@@ -16,6 +16,15 @@ def random_number():
     }
     return jsonify(response)
 
+@app.route('/api/test', methods=['GET'])
+def api_test():
+    response = {
+        'key1': 'value1',
+        'key2': 'value2'
+    }
+    return jsonify(response)
+
+# Pages routes
 @app.route('/', defaults={'path': ''})
 
 @app.route('/<path:path>')

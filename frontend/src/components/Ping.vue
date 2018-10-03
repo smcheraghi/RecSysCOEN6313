@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>Ping page</p>
     <p>{{ msg }}</p>
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error)
+          this.msg = error
         })
     }
   },
