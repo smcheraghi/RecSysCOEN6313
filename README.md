@@ -1,11 +1,39 @@
 # RecSysCOEN6313
 Recommendation system
 
+## Build setup
+
+``` bash
+# install front-end
+cd frontend
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production/Flask with minification
+# Creates the dist folder in the root of application.
+# The production flask application use this folder
+npm run build
+
+
+# install back-end
+cd ../backend
+virtualenv -p python3 env
+source env/bin/activate
+pip install -r requirements.txt
+cd ..
+
+# serve back-end at localhost:5000
+FLASK_APP=run.py flask run
+# or
+python3 run.py
+```
 ## Data Source Introduction
 https://tianchi.aliyun.com/datalab/dataSet.html?spm=5176.100073.0.0.583d3ea7v2AdZk&dataId=649
 
 ## Data link on Google Drive
-https://drive.google.com/open?id=1oWW5DNOCmgqooILF6CavPxPTdJVY-J_c         
+https://drive.google.com/open?id=1oWW5DNOCmgqooILF6CavPxPTdJVY-J_c
 https://drive.google.com/open?id=1wpcxDkKKUE-e56kucRwxGZQXEyHuYkFA
 
 ## Learning Tree-based Deep Model for Recommender Systems
