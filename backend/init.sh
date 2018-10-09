@@ -6,13 +6,14 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 sudo apt install python3-pip
 # install nginx dependent libs: pcre and zlib
 sudo apt install libpcre3-dev libpcre2-dev zlib1g-dev
-# build nginx with LibreSSL
+# build nginx with LibreSSL and optimizing params
+## ref link: http://nginx.org/en/docs/configure.html
 curl -O https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.8.1.tar.gz
 tar -zxf libressl-2.8.1.tar.gz
 curl -O http://nginx.org/download/nginx-1.15.5.tar.gz
 tar -zxf nginx-1.15.5.tar.gz
 nginx-1.15.5
-./configure --with-openssl=.../libressl-2.8.1
+./configure --with-openssl=.../libressl-2.8.1 --with-file-aio --with-threads --with-cc-opt="-O3"
 # install virtualenv
 ## ! only for current user
 pip3 install virtualenv
