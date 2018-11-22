@@ -6,7 +6,20 @@
     </div>
     <hr>
     <div>
-      {{ test }}
+    <b-card-group deck v-for="item in commodity" v-bind:key="item.cid">
+      <b-card title="title" img-src="" img-alt="Img" img-top>
+            <p class="card-text">{{ item.price }}
+              {{ item.title }}
+              {{ item.categories }}
+              {{ item.brand }}
+              {{ item.imgUrl }}
+              {{ item.salesRank }}
+            </p>
+            <div slot="footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+      </b-card>
+    </b-card-group>
     </div>
   </div>
 </template>
@@ -18,14 +31,16 @@ export default {
   data () {
     return {
       randomNumber: 0,
-      test: ""
+      commodity: [],
+      error: ""
     }
   },
   created () {
-    api().get('/test')
-      .then(response => {
-        this.test = response.data
-      })
+    api().get('/commodity').then(response => {
+        this.commodity = response.data
+    }).catch(error => {
+      this.error = error
+    })
   },
   methods: {
     getRandom () {
