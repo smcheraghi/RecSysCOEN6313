@@ -5,6 +5,7 @@
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
         <b-nav-item href="/about">About</b-nav-item>
+        <b-nav-item href="/cart">Cart</b-nav-item>
         <b-nav-item href="/ping">Ping</b-nav-item>
       </b-navbar-nav>
       <!-- Right aligned nav items -->
