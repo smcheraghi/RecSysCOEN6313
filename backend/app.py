@@ -1,9 +1,15 @@
 from flask import Flask, request
 from pyspark.sql import SparkSession
+from pyspark import SparkContext
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
-
+@application.route('/')
+def test_index():
+	return "<h>Hello World</h>"
+@application.route('/api/bestseller?start=<cursor_start>&end=<cursor_end>')
+def get_bestseller(self, cursor_start, cursor_end):
+	pass
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
 	data = request.get_json()
@@ -42,7 +48,7 @@ def get_commodity_detail(commodity_id):
 			.option('pipeline',pipeline)\
 			.load()
 	return df.toJSON()
-	pass
+	# pass
 
 # @application.route('/api/user',methods=["POST"])
 # @application.route('/api/user/<user_id>',methods=["GET","PUT"])
