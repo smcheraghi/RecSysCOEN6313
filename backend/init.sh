@@ -11,7 +11,7 @@ sudo apt install nginx
 curl -O https://www.openssl.org/source/openssl-1.1.1.tar.gz
 tar -zxf openssl-1.1.1.tar.gz
 curl -O http://nginx.org/download/nginx-1.15.6.tar.gz
-tar -zxf nginx-1.15.5.tar.gz
+tar -zxf nginx-1.15.6.tar.gz
 cd nginx-1.15.5
 ./configure --with-openssl=.../openssl-1.1.1 --with-file-aio --with-threads --with-cc-opt="-O3"
 # install virtualenv
