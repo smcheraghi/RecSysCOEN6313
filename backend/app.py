@@ -31,9 +31,10 @@ def get_bestseller(self, start, limit):
     result = collection.find(skip=start-1,limit=limit).sort("sales_rank.Electronics",1)
     # result: pymongo.cursor.Cursor object, need to transfer to json
     return result
+
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
-
+    pass
     # using spark
     '''
     data = request.get_json()
@@ -83,6 +84,8 @@ def get_commodity_detail(commodity_id):
     collection = client.recommendation.bestsellers
     result = collection.find_one({"commodity_id":commodity_id})
     return res
+
+
 # @application.route('/api/user',methods=["POST"])
 # @application.route('/api/user/<user_id>',methods=["GET","PUT"])
 # @application.route('/api/cart/<user_id>',methods=["GET","DELETE"])
