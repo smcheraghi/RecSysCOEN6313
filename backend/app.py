@@ -1,7 +1,9 @@
-from flask import Flask, request
-from pyspark.sql import SparkSession
-from pyspark import SparkContext
-import pymongo import MongoClient
+from flask import Flask, request, Response
+#from pyspark.sql import SparkSession
+#from pyspark import SparkContext
+from pymongo import MongoClient
+import json
+from bson.json_util import dumps
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
@@ -29,8 +31,9 @@ def get_bestseller(self, start, limit):
     client = MongoClient('localhost',27017)
     collection = client.recommendation.bestsellers
     result = collection.find(skip=start-1,limit=limit).sort("sales_rank.Electronics",1)
+    res = dumps(result)
     # result: pymongo.cursor.Cursor object, need to transfer to json
-    return result
+    return Response(res,mimetype='application/json')
 
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
@@ -83,6 +86,7 @@ def get_commodity_detail(commodity_id):
     client = MongoClient('localhost',27017)
     collection = client.recommendation.bestsellers
     result = collection.find_one({"commodity_id":commodity_id})
+    res = dumps(result)
     return res
 
 
