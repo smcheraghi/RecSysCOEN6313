@@ -1,6 +1,7 @@
 from flask import Flask, request
 from pyspark.sql import SparkSession
 from pyspark import SparkContext
+import pymongo import MongoClient
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
@@ -9,6 +10,9 @@ def test_index():
     return "<h>Hello World</h>"
 @application.route('/api/bestseller?start=<start>&limit=<limit>')
 def get_bestseller(self, start, limit):
+
+    # using spark session
+    '''
     spark = SparkSession\
             .builder\
             .appName('getBestSeller')\
@@ -20,8 +24,18 @@ def get_bestseller(self, start, limit):
             .option('pipeline',pipeline)\
             .load()
     return df.toJSON()
+    '''
+    # using pymongo
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.bestsellers
+    result = collection.find(skip=start-1,limit=limit).sort("sales_rank.Electronics",1)
+    # result: pymongo.cursor.Cursor object, need to transfer to json
+    return result
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
+
+    # using spark
+    '''
     data = request.get_json()
     spark = SparkSession\
             .builder\
@@ -34,15 +48,19 @@ def post_behavior():
     # maybe not use pyspark to store
 
     # convert json to rdd
-    behavior = spark.read.json(sc.parallelize([data]))
+    # behavior = spark.read.json(sc.parallelize([data]))
+    behavior = spark.read.json(data)
     #.rdd
     # write to mongodb
-    behavior.write.format('**').mode('append').save()
+    behavior.write.format('com.mongodb.spark.sql.DefaultSource').mode('append').save()
     pass
     # GET use pyspark to query
+    '''
+
 @application.route('/api/commodity/<commodity_id>')
 def get_commodity_detail(commodity_id):
-    # still pyspark
+    # use spark
+    '''
     #return "hello"+commodity_id
     spark = SparkSession\
             .builder\
@@ -59,7 +77,12 @@ def get_commodity_detail(commodity_id):
             .load()
     return df.toJSON()
     # pass
-
+    '''
+    # use pymongo
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.bestsellers
+    result = collection.find_one({"commodity_id":commodity_id})
+    return res
 # @application.route('/api/user',methods=["POST"])
 # @application.route('/api/user/<user_id>',methods=["GET","PUT"])
 # @application.route('/api/cart/<user_id>',methods=["GET","DELETE"])
