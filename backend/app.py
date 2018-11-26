@@ -94,4 +94,4 @@ def get_commodity_detail(commodity_id):
 # @application.route('/api/user/<user_id>',methods=["GET","PUT"])
 # @application.route('/api/cart/<user_id>',methods=["GET","DELETE"])
 if __name__ == "__main__":
-    application.run(host='0.0.0.0')
+    application.run(host='127.0.0.1')
