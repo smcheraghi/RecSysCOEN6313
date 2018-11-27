@@ -11,7 +11,7 @@ application = Flask(__name__)
 @application.route('/')
 def test_index():
     return "<h>Hello World</h>"
-@application.route('/api/bestseller)
+@application.route('/api/bestseller')
 def get_bestseller():
     start = request.args.get(start)
     limit = request.args.get(limit)
