@@ -49,7 +49,7 @@ config['cate_count'] = 801
 class inference(object):
     def __init__(self, data):
         self.data = data
-	
+
         with open('cate_list.pkl', 'rb') as f:
             self.cate_list = pickle.load(f)
 
@@ -97,7 +97,7 @@ class inference(object):
             for _, uij in DataInput(converted_data, config['item_count']):
                 max_asin = []
                 logit = Model.inference(sess,uij)
-		# top 10 asin IDs
+        # top 10 asin IDs
                 for i in range(10):
                     max_asin.append(np.argmax(logit))
                     logit[max_asin[i]] = -1
