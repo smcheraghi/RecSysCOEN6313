@@ -13,8 +13,8 @@ def test_index():
     return "<h>Hello World</h>"
 @application.route('/api/bestseller')
 def get_bestseller():
-    start = request.args.get(start)
-    limit = request.args.get(limit)
+    start = request.args.get("start")
+    limit = request.args.get("limit")
     # using spark session
     '''
     spark = SparkSession\
@@ -66,7 +66,7 @@ def post_behavior():
     # GET use pyspark to query
     '''
 
-@application.route('/api/commodity/<commodity_id>')
+@application.route('/api/commodity/<int:commodity_id>')
 def get_commodity_detail(commodity_id):
     # use spark
     '''
