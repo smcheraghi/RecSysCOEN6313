@@ -11,9 +11,10 @@ application = Flask(__name__)
 @application.route('/')
 def test_index():
     return "<h>Hello World</h>"
-@application.route('/api/bestseller?start=<start>&limit=<limit>')
-def get_bestseller(self, start, limit):
-
+@application.route('/api/bestseller)
+def get_bestseller():
+    start = request.args.get(start)
+    limit = request.args.get(limit)
     # using spark session
     '''
     spark = SparkSession\
@@ -31,7 +32,7 @@ def get_bestseller(self, start, limit):
     # using pymongo
     client = MongoClient('localhost',27017)
     collection = client.recommendation.bestitems
-    result = collection.find(skip=int(start-1),limit=int(limit).sort("sales_rank.Electronics",1)
+    result = collection.find(skip=int(start)-1,limit=int(limit)).sort("sales_rank.Electronics",1)
     res = dumps(result)
     # result: pymongo.cursor.Cursor object, need to transfer to json
     return Response(res,mimetype='application/json')
@@ -65,7 +66,7 @@ def post_behavior():
     # GET use pyspark to query
     '''
 
-@application.route('/api/commodity/<int:commodity_id>')
+@application.route('/api/commodity/<commodity_id>')
 def get_commodity_detail(commodity_id):
     # use spark
     '''
