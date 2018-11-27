@@ -4,9 +4,9 @@
     <b-navbar-brand href="/">RecSys</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item href="/about">About</b-nav-item>
-        <b-nav-item href="/cart">Cart</b-nav-item>
-        <b-nav-item href="/ping">Ping</b-nav-item>
+        <b-nav-item> <router-link to="/about">About</router-link></b-nav-item>
+        <b-nav-item> <router-link to="/cart">Cart</router-link></b-nav-item>
+        <b-nav-item> <router-link to="/ping">Ping</router-link></b-nav-item>
       </b-navbar-nav>
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -31,3 +31,12 @@
     </b-collapse>
   </b-navbar>
 </template>
+
+<style>
+a {
+  color: white !important;
+}
+a:hover {
+  color: #007bff !important;
+}
+</style>

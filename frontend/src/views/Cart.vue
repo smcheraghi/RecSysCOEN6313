@@ -1,5 +1,16 @@
 <template>
   <div class="cart">
-    <h1>This is an cart page</h1>
+    <CartView/>
   </div>
 </template>
+
+<script>
+import CartView from '@/components/CartView.vue'
+
+export default {
+  name: 'Cart',
+  components: {
+    CartView
+  }
+}
+</script>

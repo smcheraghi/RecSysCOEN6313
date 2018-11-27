@@ -5,21 +5,25 @@
       <button @click="getRandom">New random number</button>
     </div>
     <hr>
-    <div>
-    <b-card-group deck v-for="item in commodity" v-bind:key="item.cid">
-      <b-card title="title" img-src="" img-alt="Img" img-top>
-            <p class="card-text">{{ item.price }}
-              {{ item.title }}
-              {{ item.categories }}
-              {{ item.brand }}
-              {{ item.imgUrl }}
-              {{ item.salesRank }}
-            </p>
-            <div slot="footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+    <div class="commodities-list">
+      <!-- <b-card-group deck class="mb-3"> -->
+        <b-card class="commodity" v-for="item in commodity" v-bind:key="item.cid"
+            :title=item.title
+            :img-src=item.imgUrl
+            img-alt="Image"
+            img-top
+            tag="article">
+              <p class="card-text">
+                {{ item.price }} CAD
+              </p>
+            <div class="text-center">
+              <b-button variant="success" @click="addToCart(item.cid)">Add</b-button>
             </div>
-      </b-card>
-    </b-card-group>
+              <!-- <div slot="footer">
+                  <small class="text-muted">Last updated 3 mins ago</small>
+              </div> -->
+        </b-card>
+      <!-- </b-card-group> -->
     </div>
   </div>
 </template>
@@ -54,7 +58,24 @@ export default {
         // Fixme
         this.randomNumber = error
       })
+    },
+    addToCart(cid) {
+      console.log("Adding to cart: " + cid);
+      this.$store.commit("save", cid);
+      console.log("Saved: " + this.$store.state.commodities);
     }
   }
 }
 </script>
+
+<style>
+.commodities-list {
+  padding: 1rem 5rem 10rem 5rem;
+}
+.commodity {
+  display: inline-block;
+  width: 15rem;
+  margin-left: 6rem;
+  margin-top: 3rem;
+}
+</style>
