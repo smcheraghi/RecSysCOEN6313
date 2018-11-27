@@ -31,7 +31,7 @@ def get_bestseller(self, start, limit):
     # using pymongo
     client = MongoClient('localhost',27017)
     collection = client.recommendation.bestitems
-    result = collection.find(skip=start-1,limit=limit).sort("sales_rank.Electronics",1)
+    result = collection.find(skip=int(start-1),limit=int(limit).sort("sales_rank.Electronics",1)
     res = dumps(result)
     # result: pymongo.cursor.Cursor object, need to transfer to json
     return Response(res,mimetype='application/json')
@@ -65,7 +65,7 @@ def post_behavior():
     # GET use pyspark to query
     '''
 
-@application.route('/api/commodity/<commodity_id>')
+@application.route('/api/commodity/<int:commodity_id>')
 def get_commodity_detail(commodity_id):
     # use spark
     '''
