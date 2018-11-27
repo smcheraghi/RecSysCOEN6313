@@ -4,6 +4,7 @@ from flask import Flask, request, Response
 from pymongo import MongoClient
 import json
 from bson.json_util import dumps
+#from ..atrank import inference
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
@@ -29,7 +30,7 @@ def get_bestseller(self, start, limit):
     '''
     # using pymongo
     client = MongoClient('localhost',27017)
-    collection = client.recommendation.bestsellers
+    collection = client.recommendation.bestitems
     result = collection.find(skip=start-1,limit=limit).sort("sales_rank.Electronics",1)
     res = dumps(result)
     # result: pymongo.cursor.Cursor object, need to transfer to json
@@ -37,6 +38,9 @@ def get_bestseller(self, start, limit):
 
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
+    #behavior = request.get_json()
+    ## need to know the type of var 'behavior'
+    #inference.inference(behavior)
     pass
     # using spark
     '''
@@ -84,7 +88,7 @@ def get_commodity_detail(commodity_id):
     '''
     # use pymongo
     client = MongoClient('localhost',27017)
-    collection = client.recommendation.bestsellers
+    collection = client.recommendation.itemdata
     result = collection.find_one({"commodity_id":commodity_id})
     res = dumps(result)
     return res
