@@ -40,7 +40,7 @@ export default {
     }
   },
   created () {
-    api().get('/commodity').then(response => {
+    api().get('bestseller?start=2&limit=5').then(response => {
         this.commodity = response.data
     }).catch(error => {
       this.error = error
