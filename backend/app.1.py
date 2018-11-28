@@ -52,8 +52,7 @@ for k, v in config.items():
 config['user_count'] = 192403
 config['item_count'] = 63001
 config['cate_count'] = 801
-# debug
-print(config['cateid_embedding_size'])
+
 class Inference(object):
 
     def __init__(self, data):
@@ -152,6 +151,8 @@ def post_behavior():
     actions = request.get_json()
     # need to know the type of var 'actions'
     print(actions)
+    # debug
+    print(config['cateid_embedding_size'])
     rec_class = Inference(actions)
     # modelobj = Model(config,rec_class.cate_list)
     rec = rec_class.inference(actions)
