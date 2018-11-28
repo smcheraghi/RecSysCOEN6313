@@ -42,8 +42,8 @@ def get_bestseller():
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
     actions = request.get_json()
-    infer_obj = Inference(behavior)
-    max_asin = infer_obj.inference(behavior)
+    infer_obj = Inference(actions)
+    max_asin = infer_obj.inference(actions)
     return max_asin
     # using spark
     '''
