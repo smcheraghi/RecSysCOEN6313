@@ -152,6 +152,7 @@ def post_behavior():
     # need to know the type of var 'actions'
     print(actions)
     # debug
+    print(config['cate_count'])
     print(config['cateid_embedding_size'])
     rec_class = Inference(actions)
     # modelobj = Model(config,rec_class.cate_list)
