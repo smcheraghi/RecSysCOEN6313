@@ -44,7 +44,8 @@ def post_behavior():
     actions = request.get_json()
     infer_obj = Inference(actions)
     max_asin = infer_obj.inference(actions)
-    return jsonify(max_asin)
+    print (max_asin)
+    return ('',200)
     # using spark
     '''
     data = request.get_json()
