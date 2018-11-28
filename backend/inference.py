@@ -37,20 +37,17 @@ tf.app.flags.DEFINE_string('cuda_visible_devices', '0', 'Choice which GPU to use
 tf.app.flags.DEFINE_float('per_process_gpu_memory_fraction', 0.0, 'Gpu memory use fraction, 0.0 for allow_growth=True')
 
 FLAGS = tf.app.flags.FLAGS
+config = OrderedDict(sorted(FLAGS.__flags.items()))
+for k, v in config.items():
+    config[k] = v.value
+config['user_count'] = 192403
+config['item_count'] = 63001
+config['cate_count'] = 801
 
 class Inference(object):
-    
-    # config = OrderedDict(sorted(FLAGS.__flags.items()))
-    config = OrderedDict()
+
     def __init__(self, data):
         self.data = data
-
-
-        for k, v in self.config.items():
-            self.config[k] = v.value
-        self.config['user_count'] = 192403
-        self.config['item_count'] = 63001
-        self.config['cate_count'] = 801
 
         with open('cate_list.pkl', 'rb') as f:
             self.cate_list = pickle.load(f)
@@ -79,7 +76,7 @@ class Inference(object):
         hist_i = pos_list[:-1]
         hist_t = self.proc_time_emb(tim_list[:-1], tim_list[-2])
 
-        for i in range(self.config['item_count']):
+        for i in range(config['item_count']):
             result.append((reviewerID, hist_i, hist_t, i, 1))
 
         return result
@@ -96,7 +93,7 @@ class Inference(object):
             # is_training = tf.placeholder(tf.bool, [])
             sess.run(tf.global_variables_initializer())
             sess.run(tf.local_variables_initializer())
-            for _, uij in DataInput(converted_data, self.config['item_count']):
+            for _, uij in DataInput(converted_data, config['item_count']):
                 max_asin = []
                 logit = Model.inference(sess,uij)
         # top 10 asin IDs
