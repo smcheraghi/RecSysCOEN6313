@@ -107,7 +107,7 @@ def cart_info(user_id):
         return dumps(get_cart)
     else:
         patch = request.get_json()
-        collection.update({"user_id":user_id},{{"$set":{"cart":patch["cart"]}}})
+        collection.update({"user_id":user_id},{"$set":{"cart":patch["cart"]}})
         return ('',200)
 # @application.route('/api/user',methods=["POST"])
 # @application.route('/api/user/<user_id>',methods=["GET","PUT"])
