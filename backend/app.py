@@ -4,7 +4,7 @@ from flask import Flask, request, Response
 from pymongo import MongoClient
 import json
 from bson.json_util import dumps
-from inference import Inference
+from inference import *
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
@@ -43,6 +43,7 @@ def post_behavior():
     # need to know the type of var 'actions'
     print(actions)
     rec_class = Inference(actions)
+    model = Model(rec_class.config,rec_class.cate_list)
     rec = rec_class.inference(actions)
     return rec
     # pass

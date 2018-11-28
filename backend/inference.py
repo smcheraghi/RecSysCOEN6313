@@ -40,8 +40,8 @@ FLAGS = tf.app.flags.FLAGS
 
 class Inference(object):
     
-    # config = OrderedDict(sorted(FLAGS.__flags.items()))
-    config = OrderedDict()
+    config = OrderedDict(sorted(FLAGS.__flags.items()))
+    # config = OrderedDict()
     def __init__(self, data):
         self.data = data
 
@@ -108,13 +108,14 @@ class Inference(object):
 
 
 if __name__ == '__main__':
-    test_input = [{"reviewerID":0 , "asin":13179, "unixReviewTime":1400457600}, {"reviewerID":0, "asin":17993, "unixReviewTime":1400457600}, {"reviewID":0, "asin":28326, "unixReviewTime":1400457600}]
-    # init Inference and Model object
-    Inference = inference(test_input)
-    Model = Model(config, Inference.cate_list)
-    # top 10 asin IDs
-    max_asin = Inference.inference(test_input)
-    print(max_asin)
+    # test_input = [{"reviewerID":0 , "asin":13179, "unixReviewTime":1400457600}, {"reviewerID":0, "asin":17993, "unixReviewTime":1400457600}, {"reviewID":0, "asin":28326, "unixReviewTime":1400457600}]
+    # # init Inference and Model object
+    # Inference = inference(test_input)
+    # Model = Model(config, Inference.cate_list)
+    # # top 10 asin IDs
+    # max_asin = Inference.inference(test_input)
+    # print(max_asin)
+    pass
 
 
 
