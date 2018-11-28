@@ -43,9 +43,10 @@ def get_bestseller():
 def post_behavior():
     actions = request.get_json()
     infer_obj = Inference(actions)
-    max_asin = infer_obj.inference(actions)
-    print (max_asin)
-    return ('',200)
+    item_list = infer_obj.inference(actions)
+    recommend = json.dumps({"recommendation":item_list})
+    print (recommend)
+    return (recommend,200)
     # using spark
     '''
     data = request.get_json()
