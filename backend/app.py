@@ -1,4 +1,4 @@
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 #from pyspark.sql import SparkSession
 #from pyspark import SparkContext
 from pymongo import MongoClient
@@ -44,7 +44,7 @@ def post_behavior():
     actions = request.get_json()
     infer_obj = Inference(actions)
     max_asin = infer_obj.inference(actions)
-    return tuple(max_asin)
+    return jsonify(max_asin)
     # using spark
     '''
     data = request.get_json()
