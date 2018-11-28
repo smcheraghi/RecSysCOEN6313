@@ -50,7 +50,7 @@ class Inference(object):
     def __init__(self, data):
         self.data = data
         self.config = config
-	
+
         with open('../atrank/save_path/cate_list.pkl', 'rb') as f:
             self.cate_list = pickle.load(f)
 
@@ -88,7 +88,7 @@ class Inference(object):
     def inference(self, data):
         converted_data = self.convert_data(data)
         with tf.Session() as sess:
-            meta_path = '../atrank//save_path/atrank-815240.meta'
+            meta_path = '../atrank/save_path/atrank-815240.meta'
             saver = tf.train.import_meta_graph(meta_path)
             saver.restore(sess, "../atrank/save_path/atrank-815240")
             print('model restored')
@@ -110,7 +110,7 @@ class Inference(object):
 
 if __name__ == '__main__':
     test_input = [{"reviewerID":0 , "asin":13179, "unixReviewTime":1400457600}, {"reviewerID":0, "asin":17993, "unixReviewTime":1400457600}, {"reviewID":0, "asin":28326, "unixReviewTime":1400457600}]
-    # init Inference 
+    # init Inference
     Inference = Inference(test_input)
     # top 10 asin IDs
     max_asin = Inference.inference(test_input)
