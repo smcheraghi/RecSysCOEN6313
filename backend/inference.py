@@ -93,7 +93,8 @@ class Inference(object):
             # is_training = tf.placeholder(tf.bool, [])
             sess.run(tf.global_variables_initializer())
             sess.run(tf.local_variables_initializer())
-            for _, uij in DataInput(converted_data, config['item_count']):
+            datainput = DataInput(converted_data, config['item_count'])
+            for _, uij in datainput:
                 max_asin = []
                 logit = Model.inference(sess,uij)
         # top 10 asin IDs
