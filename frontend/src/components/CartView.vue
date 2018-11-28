@@ -3,22 +3,22 @@
     <div>
       <div class="commodities-list">
       <!-- <b-card-group deck class="mb-3"> -->
-        <b-card v-for="item in cart" v-bind:key="item.cid"
-            :title=item.title
-            :img-src=item.imgUrl
-            img-alt="Image"
-            img-top
-            tag="article">
-              <p class="card-text">
+        <b-container class="bv-example-row" v-for="item in goods" v-bind:key="item.commodity_id">
+          <b-row>
+              <b-col><img :src=item.image_url></b-col>
+              <b-col>
+                <br>
+                {{ item.title }}
+                <br>
+                <br>
                 {{ item.price }} CAD
-              </p>
-            <div class="text-center">
-              <b-button variant="success" @click="addToCart(item.cid)">Add</b-button>
-            </div>
-              <!-- <div slot="footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-              </div> -->
-        </b-card>
+                <br>
+                <a @click="removeItem(item.commodity_id)">
+                  Remove
+                </a>
+              </b-col>
+          </b-row>
+        </b-container>
       <!-- </b-card-group> -->
     </div>
     </div>
@@ -36,24 +36,37 @@ export default {
       cart: []
     }
   },
+  watch: {
+  },
   created() {
-    api().get('/commodity').then(response => {
-        this.goods = response.data
+    this.commodities = this.$store.state.commodities;
+    for (let i=0; i<this.commodities.length; i++) {
+      let query = '/commodity/' + this.commodities[i];
+      console.log(query);
+      api().get(query).then(response => {
+        this.goods.push(response.data);
+        console.log(this.goods);
     }).catch(error => {
       this.error = error
     });
-    console.log("Goods from API: " + this.goods);
-    this.commodities = this.$store.state.commodities;
-    //console.log("Goods in the cart: " + this.commodities);
-    let k =0;
-    for (let i=0; i<this.goods.length; i++) {
-      for (let j=0; j<this.commodity.length; j++) {
-        if(this.goods[i].cid === this.commodity[j]) {
-          this.cart[k] = this.goods[i];
-          k++;
-        }
-      }
     }
+    // api().get('/commodity').then(response => {
+    //     this.goods = response.data
+    // }).catch(error => {
+    //   this.error = error
+    // });
+    // console.log("Goods from API: " + this.goods);
+    // this.commodities = this.$store.state.commodities;
+    // //console.log("Goods in the cart: " + this.commodities);
+    // let k =0;
+    // for (let i=0; i<this.goods.length; i++) {
+    //   for (let j=0; j<this.commodity.length; j++) {
+    //     if(this.goods[i].cid === this.commodity[j]) {
+    //       this.cart[k] = this.goods[i];
+    //       k++;
+    //     }
+    //   }
+    // }
     // this.goods = this.$store.state.commodities;
     // console.log("Goods: " + this.$store.state.commodities);
     // api().get('/commodity').then(response => {
@@ -61,9 +74,39 @@ export default {
     // }).catch(error => {
     //   this.error = error
     // })
+  },
+  methods: {
+    removeItem(cid) {
+      for (let i=0; i<this.goods.length; i++) {
+        if (this.goods[i].commodity_id == cid)
+          console.log("delete");
+      }
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.cart_item {
+  margin-top: 10rem;
+  height: 10rem;
+  width: 20rem;
+}
+.bv-example-row {
+  font-size: 16pt;
+  border: 1px solid gray;
+  padding: 2rem;
+  margin-top: 2rem;
+  width: 50rem;
+}
+.bv-example-row a {
+  color: black !important;
+  cursor: pointer;
+  font-size: 14pt;
+}
+.bv-example-row a:hover {
+  color: #007bff !important;
+  cursor: pointer;
+  font-size: 14pt;
+}
 </style>
