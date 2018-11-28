@@ -94,8 +94,8 @@ class Inference(object):
             sess.run(tf.global_variables_initializer())
             sess.run(tf.local_variables_initializer())
             datainput = DataInput(converted_data, config['item_count'])
+            max_asin = []
             for _, uij in datainput:
-                max_asin = []
                 modelobj = Model(config, self.cate_list)
                 logit = modelobj.inference(sess,uij)
         # top 10 asin IDs
