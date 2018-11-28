@@ -96,7 +96,8 @@ class Inference(object):
             datainput = DataInput(converted_data, config['item_count'])
             for _, uij in datainput:
                 max_asin = []
-                logit = Model.inference(sess,uij)
+                modelobj = Model()
+                logit = modelobj.inference(sess,uij)
         # top 10 asin IDs
                 for i in range(10):
                     max_asin.append(np.argmax(logit))
