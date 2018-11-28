@@ -43,7 +43,7 @@ def post_behavior():
     # need to know the type of var 'actions'
     print(actions)
     rec_class = Inference(actions)
-    model = Model(config,rec_class.cate_list)
+    Model = Model(config,rec_class.cate_list)
     rec = rec_class.inference(actions)
     return rec
     # pass
