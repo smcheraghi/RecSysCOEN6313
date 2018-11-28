@@ -104,6 +104,8 @@ class Inference(object):
             sess.run(tf.local_variables_initializer())
             datainput = DataInput(converted_data, config['item_count'])
             max_asin = []
+            print(config['cate_count'])
+            print(config['cateid_embedding_size'])
             modelobj = Model(config,self.cate_list)
             modelobj.is_training = tf.placeholder(tf.bool,[])
             for _, uij in datainput:
