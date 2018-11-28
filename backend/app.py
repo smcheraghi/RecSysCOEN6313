@@ -4,7 +4,9 @@ from flask import Flask, request, Response
 from pymongo import MongoClient
 import json
 from bson.json_util import dumps
-from inference import *
+import sys
+sys.path.append('../atrank')
+from inference import Inference
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
@@ -39,14 +41,12 @@ def get_bestseller():
 
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
-    actions = request.get_json()
-    # need to know the type of var 'actions'
-    print(actions)
-    rec_class = Inference(actions)
-    # modelobj = Model(config,rec_class.cate_list)
-    rec = rec_class.inference(actions)
-    return rec
-    # pass
+    #behavior = request.get_json()
+    ## need to know the type of var 'behavior'
+    Inference = Inference(behavior)
+    max_asin = Inference.inference(behavior)
+    #inference.inference(behavior)
+    pass
     # using spark
     '''
     data = request.get_json()

@@ -45,12 +45,14 @@ config['item_count'] = 63001
 config['cate_count'] = 801
 
 class Inference(object):
-
     def __init__(self, data):
         self.data = data
+        self.config = config
 
-        with open('cate_list.pkl', 'rb') as f:
+        with open('../atrank/save_path/cate_list.pkl', 'rb') as f:
             self.cate_list = pickle.load(f)
+
+        self.Model = Model(self.config, self.cate_list)
 
         random.seed(1234)
         np.random.seed(1234)
@@ -84,21 +86,19 @@ class Inference(object):
     def inference(self, data):
         converted_data = self.convert_data(data)
         with tf.Session() as sess:
-            meta_path = './save_path/atrank-815240.meta'
+            meta_path = '../atrank/save_path/atrank-815240.meta'
             saver = tf.train.import_meta_graph(meta_path)
-            saver.restore(sess, "./save_path/atrank-815240")
+            saver.restore(sess, "../atrank/save_path/atrank-815240")
             print('model restored')
 
             # whether it's training or not
             # is_training = tf.placeholder(tf.bool, [])
             sess.run(tf.global_variables_initializer())
             sess.run(tf.local_variables_initializer())
-            datainput = DataInput(converted_data, config['item_count'])
-            max_asin = []
-            for _, uij in datainput:
-                modelobj = Model(config, self.cate_list)
-                logit = modelobj.inference(sess,uij)
-        # top 10 asin IDs
+            for _, uij in DataInput(converted_data, config['item_count']):
+                max_asin = []
+                logit = self.Model.inference(sess, uij)
+		# top 10 asin IDs
                 for i in range(10):
                     max_asin.append(np.argmax(logit))
                     logit[max_asin[i]] = -1
@@ -108,9 +108,8 @@ class Inference(object):
 
 if __name__ == '__main__':
     test_input = [{"reviewerID":0 , "asin":13179, "unixReviewTime":1400457600}, {"reviewerID":0, "asin":17993, "unixReviewTime":1400457600}, {"reviewID":0, "asin":28326, "unixReviewTime":1400457600}]
-    # init Inference and Model object
-    Inference = inference(test_input)
-    Model = Model(config, Inference.cate_list)
+    # init Inference
+    Inference = Inference(test_input)
     # top 10 asin IDs
     max_asin = Inference.inference(test_input)
     # print(max_asin)
