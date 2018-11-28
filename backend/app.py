@@ -8,7 +8,7 @@ from inference import *
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"
-@application.route('/')
+@application.route('/api')
 def test_index():
     return "<h>Hello World</h>"
 @application.route('/api/bestseller')
@@ -98,9 +98,18 @@ def get_commodity_detail(commodity_id):
     res = dumps(result)
     return res
 
-
+@application.route('/api/cart/<int:user_id>', methods=["GET","PUT"])
+def cart_info(user_id):
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.cart
+    if request.method=='GET':
+        get_cart = collection.find({"user_id":user_id})
+        return dumps(get_cart)
+    else:
+        patch = request.get_json()
+        collection.update({"user_id":user_id},{{"$set":{"cart":patch["cart"]}}})
+        return ('',200)
 # @application.route('/api/user',methods=["POST"])
 # @application.route('/api/user/<user_id>',methods=["GET","PUT"])
-# @application.route('/api/cart/<user_id>',methods=["GET","DELETE"])
 if __name__ == "__main__":
     application.run(host='127.0.0.1')
