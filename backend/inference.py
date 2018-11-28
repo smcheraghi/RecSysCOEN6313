@@ -38,8 +38,6 @@ tf.app.flags.DEFINE_float('per_process_gpu_memory_fraction', 0.0, 'Gpu memory us
 
 FLAGS = tf.app.flags.FLAGS
 config = OrderedDict(sorted(FLAGS.__flags.items()))
-
-
 for k, v in config.items():
     config[k] = v.value
 config['user_count'] = 192403
@@ -51,7 +49,7 @@ class Inference(object):
         self.data = data
         self.config = config
 
-        with open('../atrank/save_path/cate_list.pkl', 'rb') as f:
+        with open('cate_list.pkl', 'rb') as f:
             self.cate_list = pickle.load(f)
 
         self.Model = Model(self.config, self.cate_list)
@@ -88,13 +86,13 @@ class Inference(object):
     def inference(self, data):
         converted_data = self.convert_data(data)
         with tf.Session() as sess:
-            meta_path = '../atrank/save_path/atrank-815240.meta'
+            meta_path = './save_path/atrank-815240.meta'
             saver = tf.train.import_meta_graph(meta_path)
-            saver.restore(sess, "../atrank/save_path/atrank-815240")
+            saver.restore(sess, "./save_path/atrank-815240")
             print('model restored')
 
             # whether it's training or not
-            is_training = tf.placeholder(tf.bool, [])
+            # is_training = tf.placeholder(tf.bool, [])
             sess.run(tf.global_variables_initializer())
             sess.run(tf.local_variables_initializer())
             for _, uij in DataInput(converted_data, config['item_count']):
@@ -114,7 +112,8 @@ if __name__ == '__main__':
     Inference = Inference(test_input)
     # top 10 asin IDs
     max_asin = Inference.inference(test_input)
-    print(max_asin)
+    # print(max_asin)
+    pass
 
 
 
