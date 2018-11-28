@@ -4,7 +4,7 @@ from flask import Flask, request, Response
 from pymongo import MongoClient
 import json
 from bson.json_util import dumps
-from .inference import Inference
+from inference import Inference
 
 application = Flask(__name__)
 #application.config["APPLICATION_ROOT"]="/flask"

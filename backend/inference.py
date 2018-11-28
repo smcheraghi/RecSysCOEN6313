@@ -36,17 +36,18 @@ tf.app.flags.DEFINE_integer('eval_freq', 1000, 'Display training status every th
 tf.app.flags.DEFINE_string('cuda_visible_devices', '0', 'Choice which GPU to use')
 tf.app.flags.DEFINE_float('per_process_gpu_memory_fraction', 0.0, 'Gpu memory use fraction, 0.0 for allow_growth=True')
 
-FLAGS = tf.app.flags.FLAGS
-config = OrderedDict(sorted(FLAGS.__flags.items()))
 
-
-for k, v in config.items():
-    config[k] = v.value
-config['user_count'] = 192403
-config['item_count'] = 63001
-config['cate_count'] = 801
 
 class Inference(object):
+    FLAGS = tf.app.flags.FLAGS
+    config = OrderedDict(sorted(FLAGS.__flags.items()))
+
+
+    for k, v in config.items():
+        config[k] = v.value
+    config['user_count'] = 192403
+    config['item_count'] = 63001
+    config['cate_count'] = 801
     def __init__(self, data):
         self.data = data
 
