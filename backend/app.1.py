@@ -52,6 +52,8 @@ for k, v in config.items():
 config['user_count'] = 192403
 config['item_count'] = 63001
 config['cate_count'] = 801
+# debug
+print(config['cateid_embedding_size'])
 class Inference(object):
 
     def __init__(self, data):
@@ -104,6 +106,7 @@ class Inference(object):
             datainput = DataInput(converted_data, config['item_count'])
             max_asin = []
             modelobj = Model(config,self.cate_list)
+            modelobj.is_training = tf.placeholder(tf.bool,[])
             for _, uij in datainput:
                 logit = modelobj.inference(sess,uij)
         # top 10 asin IDs
