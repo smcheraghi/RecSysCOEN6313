@@ -103,8 +103,9 @@ class Inference(object):
             sess.run(tf.local_variables_initializer())
             datainput = DataInput(converted_data, config['item_count'])
             max_asin = []
+            modelobj = Model(config,self.cate_list)
             for _, uij in datainput:
-                logit = Model.inference(sess,uij)
+                logit = modelobj.inference(sess,uij)
         # top 10 asin IDs
                 for i in range(10):
                     max_asin.append(np.argmax(logit))
@@ -149,7 +150,7 @@ def post_behavior():
     # need to know the type of var 'actions'
     print(actions)
     rec_class = Inference(actions)
-    modelobj = Model(config,rec_class.cate_list)
+    # modelobj = Model(config,rec_class.cate_list)
     rec = rec_class.inference(actions)
     return rec
     # pass
