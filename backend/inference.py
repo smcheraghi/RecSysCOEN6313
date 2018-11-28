@@ -96,7 +96,7 @@ class Inference(object):
             datainput = DataInput(converted_data, config['item_count'])
             for _, uij in datainput:
                 max_asin = []
-                modelobj = Model()
+                modelobj = Model(config, self.cate_list)
                 logit = modelobj.inference(sess,uij)
         # top 10 asin IDs
                 for i in range(10):
@@ -107,12 +107,12 @@ class Inference(object):
 
 
 if __name__ == '__main__':
-    # test_input = [{"reviewerID":0 , "asin":13179, "unixReviewTime":1400457600}, {"reviewerID":0, "asin":17993, "unixReviewTime":1400457600}, {"reviewID":0, "asin":28326, "unixReviewTime":1400457600}]
-    # # init Inference and Model object
-    # Inference = inference(test_input)
-    # Model = Model(config, Inference.cate_list)
-    # # top 10 asin IDs
-    # max_asin = Inference.inference(test_input)
+    test_input = [{"reviewerID":0 , "asin":13179, "unixReviewTime":1400457600}, {"reviewerID":0, "asin":17993, "unixReviewTime":1400457600}, {"reviewID":0, "asin":28326, "unixReviewTime":1400457600}]
+    # init Inference and Model object
+    Inference = inference(test_input)
+    Model = Model(config, Inference.cate_list)
+    # top 10 asin IDs
+    max_asin = Inference.inference(test_input)
     # print(max_asin)
     pass
 
