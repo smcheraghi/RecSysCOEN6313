@@ -42,8 +42,9 @@ def post_behavior():
     actions = request.get_json()
     # need to know the type of var 'actions'
 
-    recs = Inference.inference(actions)
-    return recs
+    rec_class = Inference(actions)
+    rec = rec_class.inference(actions)
+    return rec
     # pass
     # using spark
     '''
