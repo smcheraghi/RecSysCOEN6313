@@ -49,7 +49,7 @@ class Inference(object):
         self.data = data
         self.config = config
 
-        with open('../atrank/save_path/cate_list.pkl', 'rb') as f:
+        with open('cate_list.pkl', 'rb') as f:
             self.cate_list = pickle.load(f)
 
         self.Model = Model(self.config, self.cate_list)
@@ -86,9 +86,9 @@ class Inference(object):
     def inference(self, data):
         converted_data = self.convert_data(data)
         with tf.Session() as sess:
-            meta_path = '../atrank/save_path/atrank-815240.meta'
+            meta_path = './save_path/atrank-815240.meta'
             saver = tf.train.import_meta_graph(meta_path)
-            saver.restore(sess, "../atrank/save_path/atrank-815240")
+            saver.restore(sess, "./save_path/atrank-815240")
             print('model restored')
 
             # whether it's training or not
