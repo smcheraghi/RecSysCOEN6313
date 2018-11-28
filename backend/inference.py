@@ -40,8 +40,8 @@ FLAGS = tf.app.flags.FLAGS
 
 class Inference(object):
     
-    config = OrderedDict(sorted(FLAGS.__flags.items()))
-    # config = OrderedDict()
+    # config = OrderedDict(sorted(FLAGS.__flags.items()))
+    config = OrderedDict()
     def __init__(self, data):
         self.data = data
 
