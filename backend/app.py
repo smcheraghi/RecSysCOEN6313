@@ -44,10 +44,7 @@ def post_behavior():
     actions = request.get_json()
     infer_obj = Inference(actions)
     item_list = infer_obj.inference(actions)
-    recommend = {"recommendation":item_list}
-    recommend = json.dumps(recommend)
-    print (recommend)
-    return (recommend,200)
+    return json.dumps({"recommendation":str(item_list)})
     # using spark
     '''
     data = request.get_json()
