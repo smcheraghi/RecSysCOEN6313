@@ -107,7 +107,43 @@ def cart_info(user_id):
         patch = request.get_json()
         collection.update({"user_id":user_id},{"$set":{"cart":patch["cart"]}})
         return ('',200)
-# @application.route('/api/user',methods=["POST"])
-# @application.route('/api/user/<user_id>',methods=["GET","PUT"])
+
+@application.route('/api/commodity', methods=["POST"])
+def create_commodity():
+    commodity = request.get_json()
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.itemdata
+    collection.insertOne(commodity)
+    return ('',200)
+@application.route('/api/commodity/<int:commodity_id>',methods=["PUT","DELETE"])
+def update_delete_item(commodity_id):
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.itemdata
+    if request.method=='PUT':
+        collection.updateOne({"commodity_id":commodity_id},request.get_json)
+        return ('',200)
+    else:
+        collection.deleteOne({"commodity_id":commodity_id})
+        return ('',200)
+
+@application.route('/api/user',methods=["POST"])
+def create_user():
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.user
+    collection.insertOne(request.get_json())
+    return ('',200)
+@application.route('/api/user/<user_id>',methods=["GET","PUT","DELETE"])
+def manipulate_user(user_id):
+    client = MongoClient('localhost',27017)
+    collection = client.recommendation.user
+    if request.method=='GET':
+        return dumps(collection.findOne({"user_id":user_id}))
+    elif request.method=='PUT':
+        user_info = request.get_json()
+        collection.updateOne({"user_id":user_id},user_info)
+        return ('',200)
+    else:
+        collection.deleteOne({"user_id":user_id})
+        return ('',200)
 if __name__ == "__main__":
     application.run(host='127.0.0.1')
