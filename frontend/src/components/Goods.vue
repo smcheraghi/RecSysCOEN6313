@@ -122,7 +122,8 @@ export default {
         let query = '/commodity/' + this.recommendations[i];
         console.log("Query: " + query);
         api().get(query).then(response => {
-          this.commodity.push.apply(this.commodity, response.data);
+          console.log(response.data);
+          this.commodity.push(response.data);
           console.log(this.commodity);
         }).catch(error => {
           this.error = error
