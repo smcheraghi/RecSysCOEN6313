@@ -2,20 +2,18 @@
   <div>
     <div class="commodities-list">
       <!-- <b-card-group deck class="mb-3"> -->
-        <b-card class="commodity" v-for="item in commodity" v-bind:key="item.cid"
+        <b-card class="commodity" v-for="item in commodity" v-bind:key="item.commodity_id"
             :title=item.title
+            :img-src=item.image_url
             img-alt="Image"
             img-top
             tag="article">
-            <img :src=item.image_url @click="modalShow = !modalShow"/>
-              <p class="card-text">
-                {{ item.price }} CAD
-              </p>
-            <div class="text-center">
-              <b-button variant="success" @click="addAction(item.commodity_id, 'info')">More Info</b-button>
-            </div>
-            <div class="text-center">
-              <b-button variant="success" @click="addAction(item.commodity_id, 'cart')">Add</b-button>
+            <p class="card-text">
+              {{ item.price }} CAD
+            </p>
+            <div>
+              <b-button variant="secondary" @click="addAction(item, 'info')">More Info</b-button>
+              <b-button style="margin-left:1rem" variant="success" @click="addAction(item, 'cart')">Add</b-button>
             </div>
               <!-- <div slot="footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
@@ -24,7 +22,19 @@
       <!-- </b-card-group> -->
     </div>
     <b-modal v-model="modalShow">
-      <p class="my-4">Hello from modal!</p>
+       <b-card class="modal-info"
+          :title=title
+          :img-src=image_url
+          img-alt="Image"
+          img-top
+          tag="article">
+          <p class="card-text">
+            {{ description }}
+          </p>
+          <p class="card-text">
+            {{ price }} CAD
+          </p>
+      </b-card>
     </b-modal>
   </div>
 </template>
@@ -44,7 +54,12 @@ export default {
       modalShow: false,
       recommendations: [],
       actions: [],
-      currentChunk: 0
+      currentChunk: 0,
+      itemForModal: null,
+      title: "",
+      image_url: "",
+      price: "",
+      description: ""
     }
   },
   watch: {
@@ -61,10 +76,16 @@ export default {
     this.addCommodities()
   },
   methods: {
-    addAction(cid, action) {
-      this.actions.push(cid);
+    addAction(item, action) {
+      this.actions.push(item.commodity_id);
       if (action === 'cart') {
-        this.addToCart(cid);
+        this.addToCart(item.commodity_id);
+      } else {
+        this.title=item.title;
+        this.image_url=item.image_url;
+        this.price=item.price;
+        this.description = item.description;
+        this.modalShow = !this.modalShow;
       }
       if ((this.actions.length % 3) === 0) {
         this.retrieveRecommendations();
@@ -94,7 +115,6 @@ export default {
       let date = new Date();
       let timestamp = date.getTime();
       let actionArr = this.actions;
-      console.log(actionArr);
       let result = await api().post("behavior", [{
         "reviewerID": 192500,
         "asin": actionArr[this.currentChunk],
@@ -122,8 +142,7 @@ export default {
         let query = '/commodity/' + this.recommendations[i];
         console.log("Query: " + query);
         api().get(query).then(response => {
-          this.commodity.push.apply(this.commodity, response.data);
-          console.log(this.commodity);
+          this.commodity.push(response.data);
         }).catch(error => {
           this.error = error
         })
@@ -140,7 +159,21 @@ export default {
 .commodity {
   display: inline-block;
   width: 15rem;
+  /* height: 25rem; */
   margin-left: 6rem;
   margin-top: 3rem;
+  margin-bottom: 0
 }
+.commodity img{
+  height: 10rem;
+}
+.commodity h4{
+  font-size: 1rem !important;
+}
+.modal-info img{
+  max-height: 15rem;
+}
+/* .commodity p{
+  /* font-size: 14pt;
+} */
 </style>
