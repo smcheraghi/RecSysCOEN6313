@@ -4,15 +4,18 @@
       <!-- <b-card-group deck class="mb-3"> -->
         <b-card class="commodity" v-for="item in commodity" v-bind:key="item.cid"
             :title=item.title
-            :img-src=item.image_url
             img-alt="Image"
             img-top
             tag="article">
+            <img :src=item.image_url @click="modalShow = !modalShow"/>
               <p class="card-text">
                 {{ item.price }} CAD
               </p>
             <div class="text-center">
-              <b-button variant="success" @click="addToCart(item.commodity_id)">Add</b-button>
+              <b-button variant="success" @click="addAction(item.commodity_id, 'info')">More Info</b-button>
+            </div>
+            <div class="text-center">
+              <b-button variant="success" @click="addAction(item.commodity_id, 'cart')">Add</b-button>
             </div>
               <!-- <div slot="footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
@@ -20,6 +23,9 @@
         </b-card>
       <!-- </b-card-group> -->
     </div>
+    <b-modal v-model="modalShow">
+      <p class="my-4">Hello from modal!</p>
+    </b-modal>
   </div>
 </template>
 
@@ -34,7 +40,11 @@ export default {
       error: "",
       bottom: false,
       beers: [],
-      startItem: -4
+      startItem: -4,
+      modalShow: false,
+      recommendations: [],
+      actions: [],
+      currentChunk: 0
     }
   },
   watch: {
@@ -51,6 +61,15 @@ export default {
     this.addCommodities()
   },
   methods: {
+    addAction(cid, action) {
+      this.actions.push(cid);
+      if (action === 'cart') {
+        this.addToCart(cid);
+      }
+      if ((this.actions.length % 3) === 0) {
+        this.retrieveRecommendations();
+      }
+    },
     addCommodities() {
       this.startItem += 6;
       let bestsellerQuery = 'bestseller?start=' + this.startItem + '&limit=6';
@@ -68,22 +87,47 @@ export default {
       const bottomOfPage = visible + scrollY >= pageHeight
       return bottomOfPage || pageHeight < visible
     },
-    getRandom () {
-      this.randomNumber = this.getRandomFromBackend()
-    },
-    getRandomFromBackend () {
-      api().get('random').then(response => {
-        this.randomNumber = response.data.randomNumber
-      }).catch(error => {
-        // console.log(error)
-        // Fixme
-        this.randomNumber = error
-      })
-    },
     addToCart(cid) {
-      console.log("Adding to cart: ");
       this.$store.commit("save", cid);
-      console.log("Saved: " + this.$store.state.commodities);
+    },
+    async retrieveRecommendations() {
+      let date = new Date();
+      let timestamp = date.getTime();
+      let actionArr = this.actions;
+      console.log(actionArr);
+      let result = await api().post("behavior", [{
+        "reviewerID": 192500,
+        "asin": actionArr[this.currentChunk],
+        "unixReviewTime": timestamp
+      },
+      {
+        "reviewerID": 192500,
+        "asin": actionArr[this.currentChunk+1],
+        "unixReviewTime":timestamp
+      },
+      {
+        "reviewerID": 192500,
+        "asin": actionArr[this.currentChunk+2],
+        "unixReviewTime":timestamp
+      }
+      ]);
+      this.recommendations = JSON.parse(result.data.recommendation);
+      console.log("Rec: " + this.recommendations + this.recommendations.length);
+      //console.log("Rec: " + JSON.parse(this.recommendations) + JSON.parse(this.recommendations).length);
+      this.currentChunk += 3;
+      this.addRecommendations();
+    },
+    addRecommendations() {
+      for (let i=0; i< this.recommendations.length; i++) {
+        let query = '/commodity/' + this.recommendations[i];
+        console.log("Query: " + query);
+        api().get(query).then(response => {
+          this.commodity.push.apply(this.commodity, response.data);
+          console.log(this.commodity);
+        }).catch(error => {
+          this.error = error
+        })
+      }
     }
   }
 }
