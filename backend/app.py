@@ -9,24 +9,21 @@ sys.path.append('../atrank')
 from inference import Inference
 
 application = Flask(__name__)
-#application.config["APPLICATION_ROOT"]="/flask"
-@application.route('/api')
-def test_index():
-    return "<h>Hello World</h>"
+
 @application.route('/api/bestseller')
 def get_bestseller():
     start = request.args.get("start")
     limit = request.args.get("limit")
+    
     # using spark session
-    '''
     spark = SparkSession\
             .builder\
             .appName('getBestSeller')\
-            .master("spark://")\
+            .master("local")\
             .getOrCreate()
     pipeline = "{'$match':{'salesRank.Electronic','$gt: "+str(start)+", $lt: "+str(start+limit)+"'}}"
     df = spark.read.format("com.mongodb.spark.sql.DefaultSource")\
-            .option('uri','mongodb://IP_ADDR/recommendation.commodity')\
+            .option('uri','mongodb://127.0.0.1/recommendation.commodity')\
             .option('pipeline',pipeline)\
             .load()
     return df.toJSON()
@@ -38,56 +35,37 @@ def get_bestseller():
     res = dumps(result)
     # result: pymongo.cursor.Cursor object, need to transfer to json
     return Response(res,mimetype='application/json')
-
+    '''
+    
 @application.route('/api/behavior', methods=["POST"])
 def post_behavior():
     actions = request.get_json()
     infer_obj = Inference(actions)
     item_list = infer_obj.inference(actions)
-    return json.dumps({"recommendation":str(item_list)})
-    # using spark
-    '''
-    data = request.get_json()
     spark = SparkSession\
             .builder\
             .appName('writeBehavior')\
-            .master("spark://")\
+            .master('local')\
             .getOrCreate()
-    # maybe try local
-
-    # go data through model
-    # maybe not use pyspark to store
-
-    # convert json to rdd
-    # behavior = spark.read.json(sc.parallelize([data]))
-    behavior = spark.read.json(data)
-    #.rdd
-    # write to mongodb
-    behavior.write.format('com.mongodb.spark.sql.DefaultSource').mode('append').save()
-    pass
-    # GET use pyspark to query
-    '''
+    sc = SparkContext()
+    data = spark.read.json(sc.parallelize(actions))
+    data.write.format('com.mongodb.spark.sql.DefaultSource').mode('append').save()
+    return json.dumps({"recommendation":str(item_list)})
 
 @application.route('/api/commodity/<int:commodity_id>')
 def get_commodity_detail(commodity_id):
     # use spark
-    '''
-    #return "hello"+commodity_id
     spark = SparkSession\
             .builder\
             .appName('readCommodity')\
-            .master("spark://")\
+            .master("local")\
             .getOrCreate()
-    # maybe try local
-
-    # specify the uri, db and collection to read
     pipeline = "{'$match':{'commodity_id','"+str(commodity_id)+"'}}"
     df = spark.read.format("com.mongodb.spark.sql.DefaultSource")\
-            .option('uri','mongodb://IP_ADDR/recommendation.commodity')\
+            .option('uri','mongodb://127.0.0.1/recommendation.commodity')\
             .option('pipeline',pipeline)\
             .load()
     return df.toJSON()
-    # pass
     '''
     # use pymongo
     client = MongoClient('localhost',27017)
@@ -95,6 +73,7 @@ def get_commodity_detail(commodity_id):
     result = collection.find_one({"commodity_id":commodity_id})
     res = dumps(result)
     return res
+    '''
 
 @application.route('/api/cart/<int:user_id>', methods=["GET","PUT"])
 def cart_info(user_id):
