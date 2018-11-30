@@ -1,2 +1,6 @@
-Flask==1.0.2
-Flask-Cors==3.0.4
+Flask>=1.0.2
+Flask-Cors>=3.0.4
+NumPy>=1.12.1
+TensorFlow>=1.4.0
+pyspark>=2.4.0
+pymongo>=3.7.2
