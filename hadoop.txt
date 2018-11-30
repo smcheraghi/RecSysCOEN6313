@@ -1,0 +1,19 @@
+NameNodeDNS="ec2-18-191-105-160.us-east-2.compute.amazonaws.com"
+DataNode001DNS="ec2-3-16-167-192.us-east-2.compute.amazonaws.com"
+DataNode002DNS="ec2-3-16-255-227.us-east-2.compute.amazonaws.com"
+DataNode003DNS="ec2-3-17-12-14.us-east-2.compute.amazonaws.com"
+NameNodeIP="172.31.31.236"
+DataNode001IP="172.31.16.125"
+DataNode002IP="172.31.23.51"
+DataNode003IP="172.31.22.212"
+
+----------------------------------------
+After ssh to all nodes :
+execute----->  start-dfs.sh  ------> on NameNode(18.191.105.160) then you have access to slave nodes
+
+
+To see info about namenodes and datanodes nodes:
+NameNode : ec2-18-191-105-160.us-east-2.compute.amazonaws.com:50070/
+DataNode001 : ec2-3-16-167-192.us-east-2.compute.amazonaws.com:50075/
+DataNode002 : ec2-3-16-255-227.us-east-2.compute.amazonaws.com:50075/
+DataNode003 : ec2-3-17-12-14.us-east-2.compute.amazonaws.com:50075/
